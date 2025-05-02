@@ -1,0 +1,42 @@
+# Step 1: Import necessary libraries
+import pandas as pd              # For handling data in DataFrame format (not used directly here but useful for later steps)
+import numpy as np               # For numerical operations, like arrays and math functions
+import matplotlib.pyplot as plt  # For data visualization
+
+# Step 2: Create arrays for independent variable x and dependent variable y
+x = np.array([95, 85, 80, 70, 60])  # Input (independent variable)
+y = np.array([85, 95, 70, 65, 70])  # Output (dependent variable)
+
+# Step 3: Create Linear Regression Model using NumPy's polyfit function
+model = np.polyfit(x, y, 1)  
+# polyfit fits a 1st degree polynomial (a line) to the data
+# model[0] is the slope, model[1] is the intercept
+
+# Step 4: Print model coefficients
+print("Model Coefficients (Slope and Intercept):", model)
+
+# Step 5: Predict the Y value for a given X value (e.g., X = 65)
+predict = np.poly1d(model)      # Creates a function from the model coefficients
+predicted_value = predict(65)   # Predicts y for x = 65
+print("Predicted value for x=65:", round(predicted_value, 2))
+
+# Step 6: Predict y values for all x values
+y_pred = predict(x)             # Applies the model to all x values
+print("Predicted y values:", np.round(y_pred, 2))
+
+# Step 7: Evaluate model performance using R-squared
+from sklearn.metrics import r2_score  # Import r2_score from sklearn
+r2 = r2_score(y, y_pred)              # Calculate R-squared value
+print("R-squared value:", r2)
+
+# Step 8: Plotting the regression line and data points
+y_line = model[1] + model[0] * x      # Calculate y values using the line equation (for plotting)
+plt.plot(x, y_line, color='red', label='Regression Line')  # Regression line
+plt.scatter(x, y_pred, color='blue', label='Predicted Points')  # Predicted points
+plt.scatter(x, y, color='green', label='Actual Points')         # Actual data points
+plt.xlabel("X values")
+plt.ylabel("Y values")
+plt.title("Linear Regression using NumPy")
+plt.legend()
+plt.grid(True)
+plt.show()

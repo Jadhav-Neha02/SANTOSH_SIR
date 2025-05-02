@@ -1,0 +1,56 @@
+# Step 1: Import libraries and create aliases
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import precision_score, confusion_matrix, accuracy_score, recall_score
+
+# Step 2: Import the Social_Media_Adv Dataset
+data = pd.read_csv("Social_Media_Adv.csv")
+
+# Step 3: Initialize the DataFrame
+df = pd.DataFrame(data)
+print("Initial Data:")
+print(df.head())
+
+# Step 4: Data Preprocessing
+
+# Convert categorical columns to numerical if applicable
+for column in df.select_dtypes(include='object').columns:
+    le = LabelEncoder()
+    df[column] = le.fit_transform(df[column])
+
+# Check for null values
+print("\nNull Values:\n", df.isnull().sum())
+
+# Covariance matrix
+print("\nCovariance Matrix:\n", df.cov())
+
+# Divide dataset into Independent(X) and Dependent(Y) variables
+X = df.drop('Purchased', axis=1)  # Replace 'Purchased' with your actual target column
+Y = df['Purchased']
+
+# Split the dataset
+xtrain, xtest, ytrain, ytest = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Scale the features if needed
+scaler = StandardScaler()
+xtrain = scaler.fit_transform(xtrain)
+xtest = scaler.transform(xtest)
+
+# Step 5: Train the Logistic Regression model
+logreg = LogisticRegression()
+logreg.fit(xtrain, ytrain)
+
+# Step 6: Predict y values for both train and test sets
+ytrain_pred = logreg.predict(xtrain)
+y_pred = logreg.predict(xtest)
+
+# Step 7: Evaluate model performance
+print("\nConfusion Matrix (Test):\n", confusion_matrix(ytest, y_pred))
+print("Accuracy (Train):", accuracy_score(ytrain, ytrain_pred))
+print("Accuracy (Test):", accuracy_score(ytest, y_pred))
+print("Precision:", precision_score(ytest, y_pred))
+print("Recall:", recall_score(ytest, y_pred))
