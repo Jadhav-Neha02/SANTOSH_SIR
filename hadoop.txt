@@ -1,0 +1,31 @@
+runing hadoop:
+	C:\Windows\system32>cd/
+
+C:\>cd hadoop
+
+
+C:\hadoop>hdfs namenode -format
+C:\hadoop>cd sbin
+
+C:\hadoop\sbin>start-dfs.cmd----start-all
+
+
+C:\hadoop\sbin>jps
+13496 DataNode
+16920 NameNode
+7832 Jps
+
+C:\hadoop\sbin>start-yarn
+starting yarn daemons
+
+C:\hadoop\sbin>jps
+
+C:\hadoop\sbin>hadoop fs -mkdir/input1
+
+C:\hadoop\sbin>hadoop fs -put c:\data.txt /input1
+
+C:\hadoop\sbin>hadoop fs -Is/input1
+
+C:\hadoop\sbin>hadoop dfs-cat/input1/data.txt
+C:\hadoop\sbin>hadoop jar C:\hadoop\share\hadoop\mapreduce\hadoop-mapreduce-examples-3.2.4.jar wordcount/input1/out
+C:\hadoop\sbin>hadoop fs-cat/out/*
